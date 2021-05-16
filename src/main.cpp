@@ -67,12 +67,12 @@ int main(int argc, char **argv) {
     // bunny
     scene->getModels()[0].setTranslation(GLVector(250, 100, 0));
     scene->getModels()[0].setScale(GLVector(0.8, 0.8, 0.8));
-    scene->getModels()[0].setRotationDeg(GLVector(0, 5, 0));
+    scene->getModels()[0].setRotationDeg(GLVector(0, 90, 0));
 
     // cube
     scene->getModels()[1].setTranslation(GLVector(100, 100, 0));
-    scene->getModels()[1].setScale(GLVector(0.9, 0.9, 0.9));
-    scene->getModels()[1].setRotation(GLVector(1.3963, 0.7854, 0.1745));
+    scene->getModels()[1].setScale(GLVector(0.7, 0.7, 0.7));
+    scene->getModels()[1].setRotationDeg(GLVector(20, 42, 0));
 
     /* Aufgabenblatt 2, Aufgabe 1: Rufen Sie Ihre renderScene-Methode hier auf */
     wireframeRenderer->renderScene(yellow);

@@ -48,24 +48,26 @@ void Model::setScale(GLVector scale) {
 }
 
 void Model::updateMatrix() {
-	
 	// x axis rotation
-	mMatrix.setValue(1, 1, cos(mRotation(0) + mRotation(2)));
-	mMatrix.setValue(1, 2, -sin(mRotation(0)));
-	mMatrix.setValue(2, 1, sin(mRotation(0)));
-	mMatrix.setValue(2, 2, cos(mRotation(0) + mRotation(1)));
+	GLMatrix xRotMatrix = GLMatrix();
+	xRotMatrix.setValue(1, 1, cos(mRotation(0)));
+	xRotMatrix.setValue(1, 2, -sin(mRotation(0)));
+	xRotMatrix.setValue(2, 1, sin(mRotation(0)));
+	xRotMatrix.setValue(2, 2, cos(mRotation(0)));
 
 	// y axis rotation
-	mMatrix.setValue(0, 0, cos(mRotation(1) + mRotation(2)));
-	mMatrix.setValue(0, 2, -sin(mRotation(1)));
-	mMatrix.setValue(2, 0, sin(mRotation(1)));
-	//mMatrix.setValue(2, 2, cos(mRotation(1)));
+	GLMatrix yRotMatrix = GLMatrix();
+	yRotMatrix.setValue(0, 0, cos(mRotation(1)));
+	yRotMatrix.setValue(0, 2, -sin(mRotation(1)));
+	yRotMatrix.setValue(2, 0, sin(mRotation(1)));
+	yRotMatrix.setValue(2, 2, cos(mRotation(1)));
 
 	// z axis rotation
-	//mMatrix.setValue(0, 0, cos(mRotation(2)));
-	mMatrix.setValue(0, 1, -sin(mRotation(2)));
-	mMatrix.setValue(1, 0, sin(mRotation(2)));
-	//mMatrix.setValue(1, 1, cos(mRotation(2)));
+	GLMatrix zRotMatrix = GLMatrix();
+	zRotMatrix.setValue(0, 0, cos(mRotation(2)));
+	zRotMatrix.setValue(0, 1, -sin(mRotation(2)));
+	zRotMatrix.setValue(1, 0, sin(mRotation(2)));
+	zRotMatrix.setValue(1, 1, cos(mRotation(2)));
 	
 	// scale
 	GLMatrix scaleMatrix = GLMatrix();
@@ -73,29 +75,14 @@ void Model::updateMatrix() {
 	scaleMatrix.setValue(1, 1, mScale(1));
 	scaleMatrix.setValue(2, 2, mScale(2));
 
-	mMatrix = mMatrix * scaleMatrix;
+	mMatrix = GLMatrix();
+	mMatrix = scaleMatrix * xRotMatrix * yRotMatrix * zRotMatrix * mMatrix;
 
 	// translation
 	mMatrix.setValue(0, 3, mTranslation(0));
 	mMatrix.setValue(1, 3, mTranslation(1));
 	mMatrix.setValue(2, 3, mTranslation(2));
-	
 
-	/*
-	mMatrix.setValue(0, 0, cos(mRotation(1)) * cos(mRotation(2)) * mScale(0));
-	mMatrix.setValue(0, 1, -sin(mRotation(2)));
-	mMatrix.setValue(0, 2, -sin(mRotation(1)));
-	mMatrix.setValue(0, 3, mTranslation(0));
-	mMatrix.setValue(1, 0, sin(mRotation(2)));
-	mMatrix.setValue(1, 1, cos(mRotation(0)) * cos(mRotation(2)) * mScale(1));
-	mMatrix.setValue(1, 2, -sin(mRotation(0)));
-	mMatrix.setValue(1, 3, mTranslation(1));
-	mMatrix.setValue(2, 0, sin(mRotation(1)));
-	mMatrix.setValue(2, 1, sin(mRotation(0)));
-	mMatrix.setValue(2, 2, cos(mRotation(0)) * mScale(2) * cos(mRotation(1)));
-	mMatrix.setValue(2, 3, mTranslation(2));
-	*/
-	
 }
 
 GLMatrix Model::getTransformation() const { return mMatrix; }
