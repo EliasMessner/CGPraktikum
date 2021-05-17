@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
     // bunny
     scene->getModels()[0].setTranslation(GLVector(250, 100, 0));
     scene->getModels()[0].setScale(GLVector(0.8, 0.8, 0.8));
-    scene->getModels()[0].setRotationDeg(GLVector(0, 90, 0));
+    scene->getModels()[0].setRotationDeg(GLVector(90, 90, 0));
 
     // cube
     scene->getModels()[1].setTranslation(GLVector(100, 100, 0));

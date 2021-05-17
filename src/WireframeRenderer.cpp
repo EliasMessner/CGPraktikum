@@ -186,8 +186,8 @@ void WireframeRenderer::seedFillArea(GLPoint seed, Color borderColor, Color fill
             int _y = y + side[1];
             GLPoint neighborPoint = GLPoint(_x, _y, 0);
             Color neighborColor = mImage->getValues()[_y * mImage->getWidth() + _x];
-            if (!Color::isEqual(neighborColor, borderColor)
-                    && !Color::isEqual(neighborColor, fillColor)
+            if (neighborColor != borderColor
+                    && neighborColor != fillColor
                     && mImage->contains(neighborPoint)) {
                 pointStack.push(neighborPoint);
             }

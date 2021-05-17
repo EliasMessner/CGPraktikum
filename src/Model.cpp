@@ -28,13 +28,13 @@ void Model::setRotation(GLVector rotation) {
 	updateMatrix();
 }
 
-static double d2r(double d) {
+static double degToRad(double d) {
 	static const auto PI = std::acos(-1);
 	return (d / 180.0) * PI;
 }
 
 void Model::setRotationDeg(GLVector rotation) {
-	setRotation(GLVector(d2r(rotation(0)), d2r(rotation(1)), d2r(rotation(2))));
+	setRotation(GLVector(degToRad(rotation(0)), degToRad(rotation(1)), degToRad(rotation(2))));
 }
 
 void Model::setTranslation(GLVector translation) {
