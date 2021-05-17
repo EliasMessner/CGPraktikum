@@ -46,4 +46,39 @@ struct HitRecord {
 struct Triangle {
   std::array<GLPoint, 3> vertex;
   GLVector normal;
+  
+  bool contains(GLPoint p) const {
+      Triangle t1 = Triangle(*this);
+      Triangle t2 = Triangle(*this);
+      Triangle t3 = Triangle(*this);
+      t1.vertex[0] = p;
+      t2.vertex[1] = p;
+      t3.vertex[2] = p;
+      if (t1.area() + t2.area() + t3.area() <= this->area() + std::numeric_limits<float>::epsilon()) {
+          return true;
+      }
+      else {
+          return false;
+      }
+  }
+
+  double area() const {
+      GLVector a = vertex[1] - vertex[0];
+      GLVector b = vertex[2] - vertex[0];
+      return crossProduct(a, b).getLength() / 2;
+  }
+
+  Triangle transform(GLMatrix transformation) const {
+      Triangle tri;
+      tri.vertex = std::array<GLPoint, 3> {
+          transformation * vertex[0],
+          transformation * vertex[1],
+          transformation * vertex[2]};
+      GLVector v = tri.vertex[1] - tri.vertex[0];
+      GLVector w = tri.vertex[2] - tri.vertex[0];
+      GLVector normal = crossProduct(v, w);
+      normal.normalize();
+      tri.normal = normal;
+      return tri;
+  }
 };

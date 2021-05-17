@@ -1,5 +1,5 @@
 
-
+#include "math.hpp"
 #include "Color.hpp"
 #include <limits>
 #include <cmath>
@@ -29,4 +29,14 @@ Color &Color::operator+=(const Color &rhs) {
   b += rhs.b;
 
   return *this;
+}
+
+bool& Color::operator==(const Color& rhs) {
+	bool result = areSame(r, rhs.r) && areSame(g, rhs.g) && areSame(b, rhs.b);
+	return result;
+}
+
+bool& Color::operator!=(const Color& rhs) {
+	bool result = !(*this == rhs);
+	return result;
 }

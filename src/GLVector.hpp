@@ -18,6 +18,8 @@ class GLVector {
 
   double norm();
 
+  double getLength();
+
   void normalize();
 
  private:

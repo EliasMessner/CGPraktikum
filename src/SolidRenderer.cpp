@@ -18,17 +18,17 @@ void SolidRenderer::renderRaycast() {
 
   // Ohne parallelisierung:
     
-  for(size_t i = 0; i < mImage->getHeight(); ++i ){
-          computeImageRow( i );
-   }
+  //for(size_t i = 0; i < mImage->getHeight(); ++i ){
+  //        computeImageRow( i );
+  // }
 
   //  Parallelisierung mit OpenMP:
     
-  //#pragma omp parallel for
-  //    for(size_t i = 0; i < mImage->getHeight(); ++i )
-  //    {
-  //        computeImageRow( i );
-  //    }
+  #pragma omp parallel for
+      for(long long i = 0; i < (long long) mImage->getHeight(); ++i )
+      {
+          computeImageRow( i );
+      }
 
   // Parallelisierung mit TBB:
     
@@ -41,6 +41,16 @@ void SolidRenderer::renderRaycast() {
  * Precondition: Sowohl mImage, mScene und mCamera  müssen gesetzt sein.
  */
 void SolidRenderer::computeImageRow(size_t rowNumber) {
+    for (size_t colNumber = 0; colNumber < mImage->getWidth(); ++colNumber) {
+        auto ray = mCamera->getRay(colNumber, rowNumber);
+        auto hitRecord = HitRecord();
+        hitRecord.color = Color(0, 0.7, 0.7);
+        hitRecord.parameter = -1;
+        hitRecord.triangleId = -1;
+        hitRecord.sphereId = -1;
+        bool hit = mScene->intersect(ray, hitRecord, std::numeric_limits<float>::epsilon());
+        mImage->setValue(rowNumber, colNumber, hit ? hitRecord.color : mImage->getBackgroundColor());
+    }
 }
 
 /**
