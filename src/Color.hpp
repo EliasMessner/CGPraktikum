@@ -16,7 +16,9 @@ public:
 
 	Color &operator+=(const Color &rhs);
 
-	static bool isEqual(Color lhs, Color rhs);
+	bool &operator==(const Color& rhs);
+
+	bool &operator!=(const Color& rhs);
 
 	float r, g, b;
 
