@@ -65,17 +65,19 @@ int main(int argc, char **argv) {
     /* Aufgabenblatt 2, Aufgabe 3: Setzen Sie die Transformationen der Modelle */
 
     // bunny
-    scene->getModels()[0].setTranslation(GLVector(250, 100, 0));
-    scene->getModels()[0].setScale(GLVector(0.8, 0.8, 0.8));
-    scene->getModels()[0].setRotationDeg(GLVector(90, 90, 0));
+    auto bunny = scene->getModels()[0];
+    /*bunny.setTranslation(GLVector(250, 100, 0));
+    bunny.setScale(GLVector(0.8, 0.8, 0.8));
+    bunny.setRotationDeg(GLVector(90, 90, 0));*/
 
     // cube
-    scene->getModels()[1].setTranslation(GLVector(100, 100, 0));
-    scene->getModels()[1].setScale(GLVector(0.7, 0.7, 0.7));
-    scene->getModels()[1].setRotationDeg(GLVector(20, 42, 0));
+    auto cube = scene->getModels()[1];
+    /*cube.setTranslation(GLVector(100, 100, 0));
+    cube.setScale(GLVector(0.7, 0.7, 0.7));
+    cube.setRotationDeg(GLVector(20, 42, 0));*/
 
     /* Aufgabenblatt 2, Aufgabe 1: Rufen Sie Ihre renderScene-Methode hier auf */
-    wireframeRenderer->renderScene(yellow);
+    // wireframeRenderer->renderScene(yellow);
 
   
 
@@ -89,18 +91,31 @@ int main(int argc, char **argv) {
   
     /* Aufgabenblatt 3:  kommentieren Sie die Zeilen wieder ein, die eine Kamera erzeugen und zur Scene hinzufügen*/
   
-    //  auto cam = std::make_shared<Camera>();
-    //GLPoint eye = GLPoint(0.0, 0.0, 300.0);
-    //cam->setEyePoint(eye);
-    //cam->setUp(GLVector(0.0, 1.0, 0.0));
-    //GLVector viewDirection = GLVector(0.0, 0, -1.0);
-    //viewDirection.normalize();
-    //cam->setViewDirection(viewDirection);
-    //cam->setSize(img->getWidth(), img->getHeight());
-    //scene->setCamera(cam);
+    auto cam = std::make_shared<Camera>();
+    GLPoint eye = GLPoint(0.0, 0.0, 300.0);
+    cam->setEyePoint(eye);
+    cam->setUp(GLVector(0.0, 1.0, 0.0));
+    GLVector viewDirection = GLVector(0.0, 0, -1.0);
+    viewDirection.normalize();
+    cam->setViewDirection(viewDirection);
+    cam->setSize(img->getWidth(), img->getHeight());
+    scene->setCamera(cam);
 
 
     /* Aufgabenblatt 3: Erzeugen Sie mindestens eine Kugel und fügen Sie diese zur Szene hinzu*/
+    auto sphere = Sphere(GLPoint(50, -50, 0), 50);
+    scene->addSphere(sphere);
+    
+    bunny.setTranslation(GLVector(100, -100, 0));
+    bunny.setRotationDeg(GLVector(0, 90, 270));
+    bunny.setScale(GLVector(1, 1, 1));
+
+    cube.setTranslation(GLVector(0, -100, 0));
+    cube.setRotationDeg(GLVector(50, 170, 0));
+    cube.setScale(GLVector(2, 2, 2));
+
+    auto solidRenderer = std::make_shared<SolidRenderer>(scene, img, cam);
+    solidRenderer->renderRaycast();
     
     /* Aufgabenblatt 4: Setzen Sie materialeigenschaften für die Kugelen und die Modelle. Die Materialeigenschaften für eine Darstellung entsprechend der Beispiellösung ist in der Aufgabenstellung gegeben. */
 

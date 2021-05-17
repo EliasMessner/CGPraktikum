@@ -60,3 +60,7 @@ bool Image::contains(GLPoint point) {
     return (0 < point(0) && point(0) < mWidth
         && 0 < point(1) && point(1) < mHeight);
 }
+
+Color Image::getBackgroundColor() {
+    return mBackgroundColor;
+}

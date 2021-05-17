@@ -84,3 +84,16 @@ inline GLMatrix operator*(const GLMatrix& lhs, const GLMatrix& rhs) {
     //}
     return result;
 }
+
+inline bool areSame(float a, const float b) {
+    return (std::fabs(a - b) < std::numeric_limits<float>::epsilon());
+}
+
+inline double getDistance(const GLPoint &lhs, const GLPoint &rhs) {
+    double result = sqrt(
+        pow(lhs(0) - rhs(0), 2) +
+        pow(lhs(1) - rhs(1), 2) +
+        pow(lhs(2) - rhs(2), 2)
+    );
+    return result;
+}

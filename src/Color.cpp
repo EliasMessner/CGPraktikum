@@ -1,5 +1,5 @@
 
-
+#include "math.hpp"
 #include "Color.hpp"
 #include <limits>
 #include <cmath>
@@ -29,10 +29,6 @@ Color &Color::operator+=(const Color &rhs) {
   b += rhs.b;
 
   return *this;
-}
-
-bool areSame(float a, const float b) {
-	return (std::fabs(a - b) < std::numeric_limits<float>::epsilon());
 }
 
 bool& Color::operator==(const Color& rhs) {
