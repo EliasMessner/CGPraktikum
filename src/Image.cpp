@@ -64,3 +64,7 @@ bool Image::contains(GLPoint point) {
 Color Image::getBackgroundColor() {
     return mBackgroundColor;
 }
+
+void Image::setBackgroundColor(Color bgc) {
+    mBackgroundColor = bgc;
+}
