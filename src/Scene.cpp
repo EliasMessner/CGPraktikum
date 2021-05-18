@@ -63,27 +63,21 @@ bool Scene::triangleIntersect(const Ray &ray, const Triangle &triangle,
 */
 bool Scene::sphereIntersect(const Ray &ray, const Sphere &sphere,
                             HitRecord &hitRecord, const float epsilon) {
-    double e_1 = ray.origin(0);
-    double e_2 = ray.origin(1);
-    double e_3 = ray.origin(2);
-    double v_1 = ray.direction(0);
-    double v_2 = ray.direction(1);
-    double v_3 = ray.direction(2);
-    double m_1 = sphere.getPosition()(0);
-    double m_2 = sphere.getPosition()(1);
-    double m_3 = sphere.getPosition()(2);
+    GLPoint e = ray.origin;
+    GLVector v = ray.direction;
+    GLPoint m = sphere.getPosition();
     double r = sphere.getRadius();
-    double radicand = std::pow((2 * e_1 * v_1 + 2 * e_2 * v_2 + 2 * e_3 * v_3 - 2 * m_2 * v_1 - 2 * m_2 * v_2 * -2 * m_3 * v_3), 2) - 4 * (std::pow(v_1, 2) + std::pow(v_2, 2) + std::pow(v_3, 2)) * (-2 * e_1 * m_2 - 2 * e_2 * m_2 - 2 * e_3 * m_3 + std::pow(e_1, 2) + std::pow(e_2, 2) + std::pow(e_3, 2) + 2 * std::pow(m_2, 2) + std::pow(m_3, 2) - std::pow(r, 2));
+    double radicand = std::pow((2 * e(0) * v(0) + 2 * e(1) * v(1) + 2 * e(2) * v(2) - 2 * m(1) * v(0) - 2 * m(1) * v(1) * -2 * m(2) * v(2)), 2) - 4 * (std::pow(v(0), 2) + std::pow(v(1), 2) + std::pow(v(2), 2)) * (-2 * e(0) * m(1) - 2 * e(1) * m(1) - 2 * e(2) * m(2) + std::pow(e(0), 2) + std::pow(e(1), 2) + std::pow(e(2), 2) + 2 * std::pow(m(1), 2) + std::pow(m(2), 2) - std::pow(r, 2));
     if (radicand < 0.0) {
         return false;
     }
     double t;
     if (areSame(radicand, 0.0)) {
-        t = (- 2 * e_1 * v_1 - 2 * e_2 * v_2 - 2 * e_3 * v_3 + 2 * m_2 * v_1 + 2 * m_2 * v_2 + 2 * m_3 * v_3) / (2 * (std::pow(v_1, 2) + std::pow(v_2, 2) + std::pow(v_3, 2)));
+        t = (- 2 * e(0) * v(0) - 2 * e(1) * v(1) - 2 * e(2) * v(2) + 2 * m(1) * v(0) + 2 * m(1) * v(1) + 2 * m(2) * v(2)) / (2 * (std::pow(v(0), 2) + std::pow(v(1), 2) + std::pow(v(2), 2)));
     }
     else {
-        double t_1 = (-sqrt(radicand) - 2 * e_1 * v_1 - 2 * e_2 * v_2 - 2 * e_3 * v_3 + 2 * m_2 * v_1 + 2 * m_2 * v_2 + 2 * m_3 * v_3) / (2 * (std::pow(v_1, 2) + std::pow(v_2, 2) + std::pow(v_3, 2)));
-        double t_2 = (sqrt(std::pow((2 * e_1 * v_1 + 2 * e_2 * v_2 + 2 * e_3 * v_3 - 2 * m_2 * v_1 - 2 * m_2 * v_2 * -2 * m_3 * v_3), 2) - 4 * (std::pow(v_1, 2) + std::pow(v_2, 2) + std::pow(v_3, 2)) * (-2 * e_1 * m_2 - 2 * e_2 * m_2 - 2 * e_3 * m_3 + std::pow(e_1, 2) + std::pow(e_2, 2) + std::pow(e_3, 2) + 2 * std::pow(m_2, 2) + std::pow(m_3, 2) - std::pow(r, 2))) - 2 * e_1 * v_1 - 2 * e_2 * v_2 - 2 * e_3 * v_3 + 2 * m_2 * v_1 + 2 * m_2 * v_2 + 2 * m_3 * v_3) / (2 * (std::pow(v_1, 2) + std::pow(v_2, 2) + std::pow(v_3, 2)));
+        double t_1 = (-sqrt(radicand) - 2 * e(0) * v(0) - 2 * e(1) * v(1) - 2 * e(2) * v(2) + 2 * m(1) * v(0) + 2 * m(1) * v(1) + 2 * m(2) * v(2)) / (2 * (std::pow(v(0), 2) + std::pow(v(1), 2) + std::pow(v(2), 2)));
+        double t_2 = (sqrt(radicand) - 2 * e(0) * v(0) - 2 * e(1) * v(1) - 2 * e(2) * v(2) + 2 * m(1) * v(0) + 2 * m(1) * v(1) + 2 * m(2) * v(2)) / (2 * (std::pow(v(0), 2) + std::pow(v(1), 2) + std::pow(v(2), 2)));
         t = fmin(t_1, t_2);
     }
     GLPoint intersecPoint = ray.origin + t * ray.direction;
