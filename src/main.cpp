@@ -35,20 +35,20 @@ int main(int argc, char **argv) {
     /* Aufgabenblatt 1, Aufgabe 2: Testen Sie Ihre drawBresenhamLine-Methode hier */
     Color yellow = Color(1.0, 1.0, 0);
     
-    wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(300, 170, 0), yellow); //1
-    wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(220, 250, 0), yellow); //2
-    wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(180, 250, 0), yellow); //3
-    wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(100, 170, 0), yellow); //4
-    wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(100, 130, 0), yellow); //5
-    wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(180, 50, 0), yellow); //6
-    wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(220, 50, 0), yellow); //7
-    wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(300, 130, 0), yellow); //8
+    //wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(300, 170, 0), yellow); //1
+    //wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(220, 250, 0), yellow); //2
+    //wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(180, 250, 0), yellow); //3
+    //wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(100, 170, 0), yellow); //4
+    //wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(100, 130, 0), yellow); //5
+    //wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(180, 50, 0), yellow); //6
+    //wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(220, 50, 0), yellow); //7
+    //wireframeRenderer->drawBresenhamLine(GLPoint(200, 150, 0), GLPoint(300, 130, 0), yellow); //8
     
 
 
     /* Aufgabenblatt 1, Aufgabe 3: Testen Sie Ihre seedFillArea-Methode hier */
 
-    /*
+    
     // triangle outside
     wireframeRenderer->drawBresenhamLine(GLPoint(30, 70, 0), GLPoint(370, 100, 0), yellow);
     wireframeRenderer->drawBresenhamLine(GLPoint(370, 100, 0), GLPoint(180, 270, 0), yellow);
@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
     wireframeRenderer->drawBresenhamLine(GLPoint(140, 130, 0), GLPoint(140, 110, 0), yellow);
     GLPoint seed = GLPoint(250, 170, 0);
     wireframeRenderer->seedFillArea(seed, yellow, Color(0, .7, 0));
-    */
+    
 
     /* Aufgabenblatt 2, Aufgabe 3: Setzen Sie die Transformationen der Modelle */
 

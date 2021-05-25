@@ -53,4 +53,8 @@ inline double dotProduct(const GLVector &lhs, const GLVector &rhs) {
 
 inline int sgn(int x) { return (x > 0) ? 1 : (x < 0) ? -1 : 0; }
 
+inline bool areSame(double a, double b) {
+    return (std::fabs(a - b) < std::numeric_limits<double>::epsilon());
+}
+
 /** Aufgabenblatt 2, Aufgabe 2 **/

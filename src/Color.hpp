@@ -1,4 +1,5 @@
 #pragma once
+#include "math.hpp"
 
 /**
  ** Klasse für Farbdefinitionen
@@ -16,9 +17,15 @@ public:
 
 	Color &operator+=(const Color &rhs);
 
-	bool &operator==(const Color& rhs);
+	friend bool operator==(const Color& lhs, const Color& rhs) {
+		bool result = (areSame(lhs.r, rhs.r) && areSame(lhs.g, rhs.g) && areSame(lhs.b, rhs.b));
+		return result;
+	}
 
-	bool &operator!=(const Color& rhs);
+	friend bool operator!=(const Color& lhs, const Color& rhs) {
+		bool result = !(lhs == rhs);
+		return result;
+	}
 
 	float r, g, b;
 

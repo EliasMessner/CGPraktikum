@@ -30,17 +30,3 @@ Color &Color::operator+=(const Color &rhs) {
 
   return *this;
 }
-
-bool areSame(double a, double b) {
-	return (std::fabs(a - b) < std::numeric_limits<double>::epsilon());
-}
-
-bool &Color::operator==(const Color& rhs) {
-	bool result = (areSame(r, rhs.r) && areSame(g, rhs.g) && areSame(b, rhs.b));
-	return result;
-}
-
-bool &Color::operator!=(const Color& rhs) {
-	bool result = !(*this == rhs);
-	return result;
-}
