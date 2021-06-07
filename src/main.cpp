@@ -65,14 +65,16 @@ int main(int argc, char **argv) {
     /* Aufgabenblatt 2, Aufgabe 3: Setzen Sie die Transformationen der Modelle */
 
     // bunny
-    scene->getModels()[0].setTranslation(GLVector(250, 100, 0));
-    scene->getModels()[0].setScale(GLVector(0.8, 0.8, 0.8));
-    scene->getModels()[0].setRotationDeg(GLVector(90, 90, 0));
+    auto& bunny = scene->getModels()[0];
+    bunny.setTranslation(GLVector(250, 100, 0));
+    bunny.setScale(GLVector(0.8, 0.8, 0.8));
+    bunny.setRotationDeg(GLVector(0, 0, 0));
 
     // cube
-    scene->getModels()[1].setTranslation(GLVector(100, 100, 0));
-    scene->getModels()[1].setScale(GLVector(0.7, 0.7, 0.7));
-    scene->getModels()[1].setRotationDeg(GLVector(20, 42, 0));
+    auto& cube = scene->getModels()[1];
+    cube.setTranslation(GLVector(100, 100, 0));
+    cube.setScale(GLVector(0.7, 0.7, 0.7));
+    cube.setRotationDeg(GLVector(20, 42, 0));
 
     /* Aufgabenblatt 2, Aufgabe 1: Rufen Sie Ihre renderScene-Methode hier auf */
     wireframeRenderer->renderScene(yellow);
