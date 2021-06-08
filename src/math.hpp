@@ -53,6 +53,10 @@ inline double dotProduct(const GLVector &lhs, const GLVector &rhs) {
 
 inline int sgn(int x) { return (x > 0) ? 1 : (x < 0) ? -1 : 0; }
 
+inline bool areSame(double a, double b) {
+    return (std::fabs(a - b) < std::numeric_limits<double>::epsilon());
+}
+
 /** Aufgabenblatt 2, Aufgabe 2 **/
 inline GLVector operator*(const GLMatrix& lhs, const GLVector& rhs) {
     return GLVector(lhs(0, 0) * rhs(0) + lhs(0, 1) * rhs(1) + lhs(0, 2) * rhs(2),
