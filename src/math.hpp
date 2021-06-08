@@ -58,3 +58,26 @@ inline bool areSame(double a, double b) {
 }
 
 /** Aufgabenblatt 2, Aufgabe 2 **/
+inline GLVector operator*(const GLMatrix& lhs, const GLVector& rhs) {
+    return GLVector(lhs(0, 0) * rhs(0) + lhs(0, 1) * rhs(1) + lhs(0, 2) * rhs(2),
+                   lhs(1, 0) * rhs(0) + lhs(1, 1) * rhs(1) + lhs(1, 2) * rhs(2),
+                   lhs(2, 0) * rhs(0) + lhs(2, 0) * rhs(1) + lhs(2, 2) * rhs(2));
+}
+
+inline GLPoint operator*(const GLMatrix& lhs, const GLPoint& rhs) {
+    return GLPoint(lhs(0, 0) * rhs(0) + lhs(0, 1) * rhs(1) + lhs(0, 2) * rhs(2) + lhs(0, 3),
+                   lhs(1, 0) * rhs(0) + lhs(1, 1) * rhs(1) + lhs(1, 2) * rhs(2) + lhs(1, 3),
+                   lhs(2, 0) * rhs(0) + lhs(2, 0) * rhs(1) + lhs(2, 2) * rhs(2) + lhs(2, 3));
+}
+
+inline GLMatrix operator*(const GLMatrix& lhs, const GLMatrix& rhs) {
+    auto result = GLMatrix();
+    for (int i = 0; i < 4; i++) {
+        result.setColumn(i,
+            GLVector(
+                lhs(0, 0) * rhs(0, i) + lhs(0, 1) * rhs(1, i) + lhs(0, 2) * rhs(2, i),
+                lhs(1, 0) * rhs(0, i) + lhs(1, 1) * rhs(1, i) + lhs(1, 2) * rhs(2, i),
+                lhs(2, 0) * rhs(0, i) + lhs(2, 1) * rhs(1, i) + lhs(2, 2) * rhs(2, i)));
+    }
+    return result;
+}

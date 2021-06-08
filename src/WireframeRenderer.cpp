@@ -13,7 +13,10 @@ void WireframeRenderer::renderScene(Color color) {
     for each (auto model in mScene->getModels()) {
         for each (auto triangle in model.mTriangles) {
             for (int i = 0; i < 3; i++) {
-                drawBresenhamLine(triangle.vertex[i], triangle.vertex[(i+1) % 3], color);
+                drawBresenhamLine(
+                    model.getTransformation() * triangle.vertex[i],
+                    model.getTransformation() * triangle.vertex[(i + 1) % 3],
+                    color);
             }
         }
     }

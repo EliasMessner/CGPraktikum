@@ -12,6 +12,7 @@ class Model {
 
   // Setter für die Transformationen
   void setRotation(GLVector rotation);
+  void setRotationDeg(GLVector deg);
   void setTranslation(GLVector translation);
   void setScale(GLVector scale);
 
