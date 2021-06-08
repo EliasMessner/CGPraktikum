@@ -68,13 +68,12 @@ inline GLPoint operator*(const GLMatrix& lhs, const GLPoint& rhs) {
 
 inline GLMatrix operator*(const GLMatrix& lhs, const GLMatrix& rhs) {
     auto result = GLMatrix();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
         result.setColumn(i,
             GLVector(
                 lhs(0, 0) * rhs(0, i) + lhs(0, 1) * rhs(1, i) + lhs(0, 2) * rhs(2, i),
                 lhs(1, 0) * rhs(0, i) + lhs(1, 1) * rhs(1, i) + lhs(1, 2) * rhs(2, i),
                 lhs(2, 0) * rhs(0, i) + lhs(2, 1) * rhs(1, i) + lhs(2, 2) * rhs(2, i)));
     }
-    result.setColumn(3, lhs.getColumn(3));
     return result;
 }
