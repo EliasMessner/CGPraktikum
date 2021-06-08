@@ -55,9 +55,9 @@ inline int sgn(int x) { return (x > 0) ? 1 : (x < 0) ? -1 : 0; }
 
 /** Aufgabenblatt 2, Aufgabe 2 **/
 inline GLVector operator*(const GLMatrix& lhs, const GLVector& rhs) {
-    return GLVector(lhs(0, 0) * rhs(0) + lhs(0, 1) * rhs(1) + lhs(0, 2) * rhs(2) + lhs(0, 3),
-                   lhs(1, 0) * rhs(0) + lhs(1, 1) * rhs(1) + lhs(1, 2) * rhs(2) + lhs(1, 3),
-                   lhs(2, 0) * rhs(0) + lhs(2, 0) * rhs(1) + lhs(2, 2) * rhs(2) + lhs(2, 3));
+    return GLVector(lhs(0, 0) * rhs(0) + lhs(0, 1) * rhs(1) + lhs(0, 2) * rhs(2),
+                   lhs(1, 0) * rhs(0) + lhs(1, 1) * rhs(1) + lhs(1, 2) * rhs(2),
+                   lhs(2, 0) * rhs(0) + lhs(2, 0) * rhs(1) + lhs(2, 2) * rhs(2));
 }
 
 inline GLPoint operator*(const GLMatrix& lhs, const GLPoint& rhs) {
