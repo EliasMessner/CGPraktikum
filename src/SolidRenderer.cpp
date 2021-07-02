@@ -44,8 +44,8 @@ void SolidRenderer::computeImageRow(size_t rowNumber) {
     for (size_t colNumber = 0; colNumber < mImage->getWidth(); ++colNumber) {
         auto ray = mCamera->getRay(colNumber, rowNumber);
         auto hitRecord = HitRecord();
-        hitRecord.color = Color(0, 0.7, 0.7); // TODO pass color as parameter?
-        hitRecord.parameter = -1;
+        hitRecord.color = Color(0, 0.7, 0.7);
+        hitRecord.parameter = std::numeric_limits<double>::max();
         hitRecord.triangleId = -1;
         hitRecord.sphereId = -1;
         bool hit = mScene->intersect(ray, hitRecord, std::numeric_limits<float>::epsilon());

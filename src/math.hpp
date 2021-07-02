@@ -82,7 +82,7 @@ inline GLMatrix operator*(const GLMatrix& lhs, const GLMatrix& rhs) {
     return result;
 }
 
-inline bool areSame(float a, const float b) {
+inline bool areSame(const float a, const float b) {
     return (std::fabs(a - b) < std::numeric_limits<float>::epsilon());
 }
 
@@ -93,4 +93,16 @@ inline double getDistance(const GLPoint &lhs, const GLPoint &rhs) {
         pow(lhs(2) - rhs(2), 2)
     );
     return result;
+}
+
+/*
+* returns the minimum of two values, if both are greater than 0.
+* If one is greater 0 and the other one is not, returns the value greater 0.
+* If both are negative or 0, returns -1.
+*/
+inline double minDiscardNegatives(const double d1, const double d2) {
+    if (d1 <= 0 && d2 <= 0) return -1;
+    else if (d1 > 0 && d2 > 0) return fmin(d1, d2);
+    else if (d1 > 0) return d1;
+    else return d2;
 }

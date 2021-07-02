@@ -21,6 +21,7 @@ bool Scene::intersect(const Ray &ray, HitRecord &hitRecord,
                       const float epsilon) {
     for each (auto &sphere in mSpheres) {
         if (sphereIntersect(ray, sphere, hitRecord, epsilon)) {
+            // set color of hitrecord
             return true;
         }
     }
@@ -28,6 +29,7 @@ bool Scene::intersect(const Ray &ray, HitRecord &hitRecord,
         for each (auto &triangle in model.mTriangles) {
             Triangle tempTriangle = triangle.transform(model.getTransformation());
             if (triangleIntersect(ray, tempTriangle, hitRecord, epsilon)) {
+                // set color of hitrecord
                 return true;
             }
         }
@@ -45,18 +47,18 @@ bool Scene::triangleIntersect(const Ray &ray, const Triangle &triangle,
     GLPoint p = triangle.vertex[0];
     GLPoint e = ray.origin;
     GLVector v = ray.direction;
+    if (areSame(dotProduct(v, n), 0.0)) return false; // ray is parallel to triangle plane -> no intersection
     double t = dotProduct((p - e), n) / dotProduct(v, n);
+    if (t <= 0) return false; // t negative -> intersecpoint behind camera
     GLPoint intersecPoint = e + t * v;
-    if (triangle.contains(intersecPoint)) {
+    if (triangle.containsBaryzent(intersecPoint)) {
         hitRecord.intersectionPoint = intersecPoint;
-        hitRecord.parameter = getDistance(intersecPoint, ray.origin);
+        hitRecord.parameter = t;
         hitRecord.rayDirection = ray.direction;
         hitRecord.normal = triangle.normal;
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 /** Aufgabenblatt 3: Gibt zurück ob ein gegebener Strahl eine Kugel der Szene trifft
@@ -69,23 +71,15 @@ bool Scene::sphereIntersect(const Ray &ray, const Sphere &sphere,
     GLVector v = ray.direction;
     GLPoint m = sphere.getPosition();
     double r = sphere.getRadius();
-
-    double radicand = std::pow((2 * e(0) * v(0) + 2 * e(1) * v(1) + 2 * e(2) * v(2) - 2 * m(0) * v(0) - 2 * m(1) * v(1) - 2 * m(2) * v(2)), 2) - 4 * (std::pow(v(0), 2) + std::pow(v(1), 2) + std::pow(v(2), 2)) * (-2 * e(0) * m(0) - 2 * e(1) * m(1) - 2 * e(2) * m(2) + std::pow(e(0), 2) + std::pow(e(1), 2) + std::pow(e(2), 2) + std::pow(m(0), 2) + std::pow(m(1), 2) + std::pow(m(2), 2) - std::pow(r, 2));
-    if (radicand < 0.0) {
-        return false;
-    }
-    double t;
-    if (areSame(radicand, 0.0)) {
-        t = (- 2 * e(0) * v(0) - 2 * e(1) * v(1) - 2 * e(2) * v(2) + 2 * m(0) * v(0) + 2 * m(1) * v(1) + 2 * m(2) * v(2)) / (2 * (std::pow(v(0), 2) + std::pow(v(1), 2) + std::pow(v(2), 2)));
-    }
-    else {
-        double t_1 = (-sqrt(radicand) - 2 * e(0) * v(0) - 2 * e(1) * v(1) - 2 * e(2) * v(2) + 2 * m(0) * v(0) + 2 * m(1) * v(1) + 2 * m(2) * v(2)) / (2 * (std::pow(v(0), 2) + std::pow(v(1), 2) + std::pow(v(2), 2)));
-        double t_2 = (sqrt(radicand) - 2 * e(0) * v(0) - 2 * e(1) * v(1) - 2 * e(2) * v(2) + 2 * m(0) * v(0) + 2 * m(1) * v(1) + 2 * m(2) * v(2)) / (2 * (std::pow(v(0), 2) + std::pow(v(1), 2) + std::pow(v(2), 2)));
-        t = fmin(t_1, t_2);
-    }
+    double radicand = dotProduct(v, (e - m)) * dotProduct(v, (e - m)) - (dotProduct((e - m), (e - m)) - r * r);
+    if (radicand < 0) return false; // no intersection
+    double t1 = -dotProduct(v, (e - m)) + std::sqrt(radicand);
+    double t2 = -dotProduct(v, (e - m)) - std::sqrt(radicand);
+    double t = minDiscardNegatives(t1, t2);
+    if (t < 0) return false; // intersection behind camera
     GLPoint intersecPoint = ray.origin + t * ray.direction;
     hitRecord.intersectionPoint = intersecPoint;
-    hitRecord.parameter = getDistance(intersecPoint, ray.origin);
+    hitRecord.parameter = t;
     hitRecord.rayDirection = ray.direction;
     hitRecord.normal = intersecPoint - m;
     return true;

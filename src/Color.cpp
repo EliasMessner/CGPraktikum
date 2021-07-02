@@ -31,12 +31,3 @@ Color &Color::operator+=(const Color &rhs) {
   return *this;
 }
 
-bool& Color::operator==(const Color& rhs) {
-	bool result = areSame(r, rhs.r) && areSame(g, rhs.g) && areSame(b, rhs.b);
-	return result;
-}
-
-bool& Color::operator!=(const Color& rhs) {
-	bool result = !(*this == rhs);
-	return result;
-}
