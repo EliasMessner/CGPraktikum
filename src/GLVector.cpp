@@ -21,6 +21,15 @@ double GLVector::norm2() {
 
 double GLVector::norm() { return std::sqrt(norm2()); }
 
+double GLVector::getLength() {
+    double result = sqrt(
+        pow(vector[0], 2) +
+        pow(vector[1], 2) +
+        pow(vector[2], 2)
+    );
+    return result;
+}
+
 void GLVector::normalize() {
   double scale = 1.0 / norm();
   vector[0] *= scale;

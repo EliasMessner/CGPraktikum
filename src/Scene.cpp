@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#include "math.hpp"
 
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
@@ -18,7 +19,22 @@ Scene::Scene() {}
  */
 bool Scene::intersect(const Ray &ray, HitRecord &hitRecord,
                       const float epsilon) {
-    return false; // Platzhalter; entfernen bei der Implementierung
+    for each (auto &sphere in mSpheres) {
+        if (sphereIntersect(ray, sphere, hitRecord, epsilon)) {
+            // set color of hitrecord
+            return true;
+        }
+    }
+    for each (auto &model in mModels) {
+        for each (auto &triangle in model.mTriangles) {
+            Triangle tempTriangle = triangle.transform(model.getTransformation());
+            if (triangleIntersect(ray, tempTriangle, hitRecord, epsilon)) {
+                // set color of hitrecord
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /** Aufgabenblatt 3: Gibt zurück ob ein gegebener Strahl ein Dreieck  eines Modells der Szene trifft
@@ -27,7 +43,22 @@ bool Scene::intersect(const Ray &ray, HitRecord &hitRecord,
  */
 bool Scene::triangleIntersect(const Ray &ray, const Triangle &triangle,
                               HitRecord &hitRecord, const float epsilon) {
-    return false; // Platzhalter; entfernen bei der Implementierung
+    GLVector n = triangle.normal;
+    GLPoint p = triangle.vertex[0];
+    GLPoint e = ray.origin;
+    GLVector v = ray.direction;
+    if (areSame(dotProduct(v, n), 0.0)) return false; // ray is parallel to triangle plane -> no intersection
+    double t = dotProduct((p - e), n) / dotProduct(v, n);
+    if (t <= 0) return false; // t negative -> intersecpoint behind camera
+    GLPoint intersecPoint = e + t * v;
+    if (triangle.containsBaryzent(intersecPoint)) {
+        hitRecord.intersectionPoint = intersecPoint;
+        hitRecord.parameter = t;
+        hitRecord.rayDirection = ray.direction;
+        hitRecord.normal = triangle.normal;
+        return true;
+    }
+    return false;
 }
 
 /** Aufgabenblatt 3: Gibt zurück ob ein gegebener Strahl eine Kugel der Szene trifft
@@ -36,7 +67,22 @@ bool Scene::triangleIntersect(const Ray &ray, const Triangle &triangle,
 */
 bool Scene::sphereIntersect(const Ray &ray, const Sphere &sphere,
                             HitRecord &hitRecord, const float epsilon) {
-    return false; // Platzhalter; entfernen bei der Implementierung
+    GLPoint e = ray.origin;
+    GLVector v = ray.direction;
+    GLPoint m = sphere.getPosition();
+    double r = sphere.getRadius();
+    double radicand = dotProduct(v, (e - m)) * dotProduct(v, (e - m)) - (dotProduct((e - m), (e - m)) - r * r);
+    if (radicand < 0) return false; // no intersection
+    double t1 = -dotProduct(v, (e - m)) + std::sqrt(radicand);
+    double t2 = -dotProduct(v, (e - m)) - std::sqrt(radicand);
+    double t = minDiscardNegatives(t1, t2);
+    if (t < 0) return false; // intersection behind camera
+    GLPoint intersecPoint = ray.origin + t * ray.direction;
+    hitRecord.intersectionPoint = intersecPoint;
+    hitRecord.parameter = t;
+    hitRecord.rayDirection = ray.direction;
+    hitRecord.normal = intersecPoint - m;
+    return true;
 }
 
 /**

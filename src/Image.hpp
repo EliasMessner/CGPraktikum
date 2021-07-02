@@ -27,6 +27,8 @@ class Image {
   const int SIZE_MEDIUM = 1;
   const int SIZE_SMALL = 2;
   bool contains(GLPoint point);
+  Color getBackgroundColor();
+  void setBackgroundColor(Color bgc);
 
  private:
   size_t mWidth;

@@ -1,5 +1,5 @@
 
-
+#include "math.hpp"
 #include "Color.hpp"
 #include <limits>
 #include <cmath>
@@ -30,3 +30,4 @@ Color &Color::operator+=(const Color &rhs) {
 
   return *this;
 }
+
