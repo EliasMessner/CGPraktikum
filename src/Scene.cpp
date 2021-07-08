@@ -19,22 +19,30 @@ Scene::Scene() {}
  */
 bool Scene::intersect(const Ray &ray, HitRecord &hitRecord,
                       const float epsilon) {
+    bool hit = false;
+    int sphereId = 0;
     for each (auto &sphere in mSpheres) {
         if (sphereIntersect(ray, sphere, hitRecord, epsilon)) {
-            // set color of hitrecord
-            return true;
+            hit = true;
+            hitRecord.sphereId = sphereId;
         }
+        sphereId++;
     }
+    int modelId = 0;
     for each (auto &model in mModels) {
+        int triangleId = 0;
         for each (auto &triangle in model.mTriangles) {
             Triangle tempTriangle = triangle.transform(model.getTransformation());
             if (triangleIntersect(ray, tempTriangle, hitRecord, epsilon)) {
-                // set color of hitrecord
-                return true;
+                hit = true;
+                hitRecord.modelId = modelId;
+                hitRecord.triangleId = triangleId;
             }
+            triangleId++;
         }
+        modelId++;
     }
-    return false;
+    return hit;
 }
 
 /** Aufgabenblatt 3: Gibt zurück ob ein gegebener Strahl ein Dreieck  eines Modells der Szene trifft
@@ -51,7 +59,8 @@ bool Scene::triangleIntersect(const Ray &ray, const Triangle &triangle,
     double t = dotProduct((p - e), n) / dotProduct(v, n);
     if (t <= 0) return false; // t negative -> intersecpoint behind camera
     GLPoint intersecPoint = e + t * v;
-    if (triangle.containsBaryzent(intersecPoint)) {
+    if (!triangle.containsBaryzent(intersecPoint)) return false;
+    if (t < hitRecord.parameter) {
         hitRecord.intersectionPoint = intersecPoint;
         hitRecord.parameter = t;
         hitRecord.rayDirection = ray.direction;
@@ -77,12 +86,16 @@ bool Scene::sphereIntersect(const Ray &ray, const Sphere &sphere,
     double t2 = -dotProduct(v, (e - m)) - std::sqrt(radicand);
     double t = minDiscardNegatives(t1, t2);
     if (t < 0) return false; // intersection behind camera
-    GLPoint intersecPoint = ray.origin + t * ray.direction;
-    hitRecord.intersectionPoint = intersecPoint;
-    hitRecord.parameter = t;
-    hitRecord.rayDirection = ray.direction;
-    hitRecord.normal = intersecPoint - m;
-    return true;
+    if (t < hitRecord.parameter) {
+        GLPoint intersecPoint = ray.origin + t * ray.direction;
+        hitRecord.intersectionPoint = intersecPoint;
+        hitRecord.parameter = t;
+        hitRecord.rayDirection = ray.direction;
+        hitRecord.normal = intersecPoint - m;
+        hitRecord.normal.normalize();
+        return true;
+    }
+    return false;
 }
 
 /**

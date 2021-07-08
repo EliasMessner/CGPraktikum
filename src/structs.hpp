@@ -35,6 +35,13 @@ struct HitRecord {
   int modelId;   // model index of the object hit by ray (default should be -1)
   int sphereId;  // sphere index of the object hit by ray (default should be -1)
 
+  void setDefaultValues() {
+      parameter = std::numeric_limits<double>::max();
+      modelId = -1;
+      triangleId = -1;
+      sphereId = -1;
+  }
+
   void print() const {
     std::cout << "Intersection at Parameter: " << parameter << " with triangle "
               << triangleId << " at point " << intersectionPoint(0) << ", "

@@ -97,8 +97,8 @@ int main(int argc, char **argv) {
     scene->setCamera(cam);
 
     /* Aufgabenblatt 3: Erzeugen Sie mindestens eine Kugel und fügen Sie diese zur Szene hinzu*/
-    scene->addSphere(Sphere(GLPoint(-150, 0, -30), 50));
-    scene->addSphere(Sphere(GLPoint(150, 0, -30), 50));
+    scene->addSphere(Sphere(GLPoint(-200, -200, -150), 150));
+    scene->addSphere(Sphere(GLPoint(200, -200, -150), 150));
     
 
     /* Aufgabenblatt 4: Setzen Sie materialeigenschaften für die Kugelen und die Modelle. Die Materialeigenschaften für eine Darstellung entsprechend der Beispiellösung ist in der Aufgabenstellung gegeben. */
@@ -107,16 +107,27 @@ int main(int argc, char **argv) {
     /* Aufgabenblatt 3: (Wenn nötig) Transformationen der Modelle im World space, sodass sie von der Kamera gesehen werden könnnen. Die nötigen Transformationen für eine Darstellung entsprechend der Beispiellösung ist in der Aufgabenstellung gegeben. */
     bunny.setTranslation(GLVector(0, -10, -30));
     bunny.setRotationDeg(GLVector(0, 170, 0));
-    bunny.setScale(GLVector(1, 1, 1));
+    bunny.setScale(GLVector(1.5, 1.5, 1.5));
 
-    cube.setTranslation(GLVector(0, -100, 0));
+    cube.setTranslation(GLVector(0, 10, 0));
     cube.setRotationDeg(GLVector(0, 0, 0));
-    cube.setScale(GLVector(1, 1, 1));
-
+    cube.setScale(GLVector(-10, -10, -10));
 
     /* Stelle materialeigenschaften zur verfügung (Relevant für Aufgabenblatt 4)*/
+    auto bunnyMaterial = Material();
+    auto cubeMaterial = Material();
+    auto sphereMaterial = Material();
+    bunnyMaterial.color = Color(0, 1, 0);
+    cubeMaterial.color = Color(0.8, 0.8, 0.8);
+    sphereMaterial.color = Color(0, 0, 1);
+    sphereMaterial.reflection = 1.0;
+    bunny.setMaterial(bunnyMaterial);
+    cube.setMaterial(cubeMaterial);
+    scene->getSpheres()[0].setMaterial(sphereMaterial);
+    scene->getSpheres()[1].setMaterial(sphereMaterial);
 
     /* Aufgabenblatt 4  Fügen Sie ein Licht zur Szene hinzu */
+    scene->addPointLight(cam->getEyePoint() + GLPoint(-100, 100, -100));
 
     /* Aufgabenblatt 3: erzeugen Sie einen SolidRenderer (vorzugsweise mir einem shared_ptr) und rufen sie die Funktion renderRaycast auf */
     auto solidRenderer = std::make_shared<SolidRenderer>(scene, img, cam);
